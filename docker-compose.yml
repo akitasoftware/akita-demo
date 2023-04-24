@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  akita-demo-server:
+    container_name: akita-demo-server
+    image: wiremock/wiremock:2.32.0-alpine
+    ports:
+      - ":8080"
+    command:
+      - --verbose
+      - --global-response-templating
+    deploy:
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - ./server/mappings/:/home/wiremock/mappings/:ro
