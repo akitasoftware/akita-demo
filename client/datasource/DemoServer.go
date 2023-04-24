@@ -21,13 +21,14 @@ type (
 	}
 	demoServerImpl struct {
 		baseURL    string
-		httpClient http.Client
+		httpClient *http.Client
 	}
 )
 
-func NewDemoServer(baseURL string) DemoServer {
+func NewDemoServer(baseURL string, client *http.Client) DemoServer {
 	return &demoServerImpl{
-		baseURL: baseURL,
+		baseURL:    baseURL,
+		httpClient: client,
 	}
 }
 
