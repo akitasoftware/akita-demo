@@ -17,7 +17,10 @@
 			},
 			"response": {
 				"status": 400,
-				"body": "{\t\t\t\t\n\t\"code\": \"invalid_trick\",\n\t\"message\": \"Trick {{request.path.[4]}} is not valid for pet {{request.path.[2]}}\"\n}",
+				"jsonBody": {
+					"code": "invalid_trick",
+					"message": "Trick {{request.path.[4]}} is not valid for pet {{request.path.[2]}}"
+				},
 				"headers": {
 					"Content-Type": "application/json"
 				},
@@ -64,7 +67,10 @@
 			},
 			"response": {
 				"status": 500,
-				"body": "{\n\t\"code\": \"doggo_needs_a_nap\",\n\t\"message\": \"Doggo {{request.path.[2]}} needs a nap. Maybe you should try creating a treat API next?\"\n}\n",
+				"jsonBody": {
+					"code": "doggo_needs_a_nap",
+					"message": "Doggo {{request.path.[2]}} needs a nap. Maybe you should try creating a treat API next?"
+				},
 				"headers": {
 					"Content-Type": "application/json"
 				},
@@ -106,7 +112,10 @@
 			},
 			"response": {
 				"status": 404,
-				"body": "{\n\t\"code\": \"no_doggo_found\",\n\t\"message\": \"Breed with id {{request.path.[2]}} not found\"\n    \n}",
+				"jsonBody": {
+					"code": "no_doggo_found",
+					"message": "Breed with id {{request.path.[2]}} not found"
+				},
 				"headers": {
 					"Content-Type": "application/json"
 				},
@@ -147,7 +156,14 @@
 			},
 			"response": {
 				"status": 200,
-				"body": "{\n\t\"id\": \"{{request.path.[2]}}\",\n\t\"first_name\": \"{{pickRandom 'John' 'Jane' 'Bob' 'Sally' 'Joe' 'Mary'}}\",\n\t\"last_name\": \"{{pickRandom 'Smith' 'Doe' 'Johnson' 'Williams' 'Brown' 'Jones'}}\",\n\t\"email\": \"{{request.path.[2]}}@example.com\",\n\t\"phone\": \"{{randomInt lower=1000000000 upper=9999999999}}\",\n\t\"pet_id\": \"{{randomValue type='UUID'}}\"\n}\n",
+				"jsonBody": {
+					"id": "{{request.path.[2]}}",
+					"first_name": "{{pickRandom 'John' 'Jane' 'Bob' 'Sally' 'Joe' 'Mary'}}",
+					"last_name": "{{pickRandom 'Smith' 'Doe' 'Johnson' 'Williams' 'Brown' 'Jones'}}",
+					"email": "{{request.path.[2]}}@example.com",
+					"phone": "{{randomInt lower=1000000000 upper=9999999999}}",
+					"pet_id": "{{randomValue type='UUID'}}"
+				},
 				"headers": {
 					"Content-Type": "application/json"
 				},
@@ -195,7 +211,14 @@
 			},
 			"response": {
 				"status": 200,
-				"body": "{\n\t\"pet_id\": \"{{request.path.[2]}}\",\n\t\"trick_id\": \"{{request.path.[4]}}\",\n\t\"name\": \"{{pickRandom 'Sit' 'Down' 'Stay' 'Roll Over' 'Speak' 'Fetch' 'Lay Down'}}\",\n\t\"difficulty\": \"{{pickRandom 'Easy' 'Medium' 'Hard'}}\",\n\t\"pet_reaction\": \"{{pickRandom 'Peformed trick with ease' 'Peformed trick with some difficulty' 'Peformed trick with great difficulty'}}\",\n\t\"performed_at\": \"{{now}}\"\n}\n\n",
+				"jsonBody": {
+					"pet_id": "{{request.path.[2]}}",
+					"trick_id": "{{request.path.[4]}}",
+					"name": "{{pickRandom 'Sit' 'Down' 'Stay' 'Roll Over' 'Speak' 'Fetch' 'Lay Down'}}",
+					"difficulty": "{{pickRandom 'Easy' 'Medium' 'Hard'}}",
+					"pet_reaction": "{{pickRandom 'Peformed trick with ease' 'Peformed trick with some difficulty' 'Peformed trick with great difficulty'}}",
+					"performed_at": "{{now}}"
+				},
 				"headers": {
 					"Content-Type": "application/json"
 				},
@@ -236,7 +259,40 @@
 			},
 			"response": {
 				"status": 200,
-				"body": "{\n\t\t\t\t\t\"id\": \"{{request.path.[2]}}\",\n\t\t\t\t\t\"name\": \"{{pickRandom 'Labrador' 'Akita' 'Poodle' 'Husky' 'Maltese' 'German Shepard'}}\",\n\t\t\t\t\t\"group\": \"{{pickRandom 'Sporting' 'Hound' 'Working' 'Terrier' 'Toy' 'Non-Sporting'}}\",\n\t\t\t\t\t\"life_span\": {\n\t\t\t\t\t\t\"min\": \"{{randomInt lower=5 upper=9}}\",\n\t\t\t\t\t\t\"max\": \"{{randomInt lower=10 upper=15}}\",\n\t\t\t\t\t\t\"avg\": \"{{randomInt lower=10 upper=12}}\"\n\t\t\t\t\t},\n\t\t\t\t\t\"height\": {\n\t\t\t\t\t\t\"male\": {\n\t\t\t\t\t\t\t\"min\": \"{{randomInt lower=20 upper=29}}\",\n\t\t\t\t\t\t\t\"max\": \"{{randomInt lower={30 upper=40}}\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"female\": {\n\t\t\t\t\t\t\t\"min\": \"{{randomInt lower=15 upper=19}}\",\n\t\t\t\t\t\t\t\"max\": \"{{randomInt lower=20 upper=30}}\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"unit\": \"in\"\n\t\t\t\t\t},\n\t\t\t\t\t\"weight\": {\n\t\t\t\t\t\t\"male\": {\n\t\t\t\t\t\t\t\"min\": \"{{randomInt lower=65 upper=74}}\",\n\t\t\t\t\t\t\t\"max\": \"{{randomInt lower=75 upper=90}}\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"female\": {\n\t\t\t\t\t\t\t\"min\": \"{{randomInt lower=55 upper=64}}\",\n\t\t\t\t\t\t\t\"max\": \"{{randomInt lower=65 upper=80}}\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t\"unit\": \"lb\"\n\t\t\t\t\t},\n\t\t\t\t\t\"description\": \"{{pickRandom 'A loving dog' 'A loyal dog' 'A playful dog' 'A smart dog' 'A friendly dog' 'A protective dog'}}\",\n\t\t\t\t\t\"created_at\": \"{{now}}\"\n}\n\n",
+				"jsonBody": {
+					"id": "{{request.path.[2]}}",
+					"name": "{{pickRandom 'Labrador' 'Akita' 'Poodle' 'Husky' 'Maltese' 'German Shepard'}}",
+					"group": "{{pickRandom 'Sporting' 'Hound' 'Working' 'Terrier' 'Toy' 'Non-Sporting'}}",
+					"life_span": {
+						"min": "{{randomInt lower=5 upper=9}}",
+						"max": "{{randomInt lower=10 upper=15}}",
+						"avg": "{{randomInt lower=10 upper=12}}"
+					},
+					"height": {
+						"male": {
+							"min": "{{randomInt lower=20 upper=29}}",
+							"max": "{{randomInt lower=30 upper=40}}"
+						},
+						"female": {
+							"min": "{{randomInt lower=15 upper=19}}",
+							"max": "{{randomInt lower=20 upper=30}}"
+						},
+						"unit": "in"
+					},
+					"weight": {
+						"male": {
+							"min": "{{randomInt lower=65 upper=74}}",
+							"max": "{{randomInt lower=75 upper=90}}"
+						},
+						"female": {
+							"min": "{{randomInt lower=55 upper=64}}",
+							"max": "{{randomInt lower=65 upper=80}}"
+						},
+						"unit": "lb"
+					},
+					"description": "{{pickRandom 'A loving dog' 'A loyal dog' 'A playful dog' 'A smart dog' 'A friendly dog' 'A protective dog'}}",
+					"created_at": "{{now}}"
+				},
 				"headers": {
 					"Content-Type": "application/json"
 				},
@@ -275,4 +331,3 @@
 		"total": 6
 	}
 }
-
