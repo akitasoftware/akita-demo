@@ -1,10 +1,9 @@
 analytics:
-  enabled: false
-  segment_write_key: <SEGMENT_WRITE_KEY>
+  enabled: true
+  segment_write_key: test_key
   app:
     name: aki-demo
     version: <APP_VERSION>
   batch_size: 1
 akita:
   base_url: https://app.akita.software
-

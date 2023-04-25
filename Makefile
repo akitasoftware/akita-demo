@@ -10,12 +10,15 @@ INFO_COLOR = \033[0;36m
 NO_COLOR   = \033[m
 
 run-demo: build-client build-server ## Run the demo
-	DEMO_IMAGE_TAG=$(TAG) \
-	AKITA_API_KEY_ID=$(AKITA_API_KEY_ID) \
-	AKITA_API_KEY_SECRET=$(AKITA_API_KEY_SECRET) \
-	AKITA_PROJECT_NAME=$(AKITA_PROJECT_NAME) \
-		docker compose up -d --always-recreate-deps
+	DEMO_IMAGE_TAG=$(TAG) ./run.sh
 .PHONY: run-demo
+
+stop-demo: ## Stop the demo
+	docker compose down -v
+.PHONY: stop-demo
+
+restart-demo: stop-demo run-demo ## Restart the demo
+.PHONY: restart-demo
 
 build-client: ## Build the demo client
 	docker build --tag=$(CLIENT_IMAGE):$(TAG) --secret id=application.yml,src=$(CONFIG_FILE) -f client/Dockerfile client
