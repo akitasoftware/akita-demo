@@ -73,7 +73,7 @@ AKITA_API_KEY_ID="${AKITA_API_KEY_ID}" \
 	AKITA_API_KEY_SECRET="${AKITA_API_KEY_SECRET}" \
 	AKITA_PROJECT_NAME="${AKITA_PROJECT_NAME}" \
   DEMO_IMAGE_TAG="${DEMO_IMAGE_TAG}" \
-	docker-compose up -d --always-recreate-deps --pull 'never'
+	docker-compose up -d --always-recreate-deps --pull 'never' --remove-orphans
 
 echo ""
 echo "The Akita demo is now up and running!"
