@@ -53,7 +53,7 @@ done
 check_and_pull_image() {
   image="$1"
 
-  docker inspect "${image}" || (echo "Image ${image} not found locally. Pulling..." && docker pull "${image}")
+  docker inspect "${image}" > /dev/null 2>&1 || (echo "Image ${image} not found locally. Pulling..." && docker pull "${image}")
 }
 
 echo ""
