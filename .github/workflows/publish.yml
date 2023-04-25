@@ -2,8 +2,12 @@ name: Publish images to registry
 
 on:
   release:
-    runs-on: ubuntu-latest
+    types:
+      - published
 
+jobs:
+  publish:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout release Tag
         uses: actions/checkout@v3
