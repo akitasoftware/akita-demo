@@ -9,8 +9,7 @@ INFO_COLOR = \033[0;36m
 NO_COLOR   = \033[m
 
 run-demo: build-client build-server ## Run the demo
-	DEMO_IMAGE_TAG=$(TAG)
-	docker compose up -d --always-recreate-deps
+	DEMO_IMAGE_TAG=$(TAG) docker compose up -d --always-recreate-deps
 .PHONY: run-demo
 
 build-client: ## Build the demo client

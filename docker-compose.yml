@@ -3,7 +3,9 @@ version: "3.8"
 services:
   akita-demo-server:
     container_name: akita-demo-server
-    image: akitasoftware/demo-server:${DEMO_IMAGE_TAG:-latest}
+    image: akitasoftware/demo-server:${DEMO_IMAGE_TAG}
+    environment:
+      - DEMO_IMAGE_TAG=latest
     ports:
       - ":8080"
     deploy:
@@ -11,7 +13,9 @@ services:
         condition: on-failure
   akita-demo-client:
     container_name: akita-demo-client
-    image: akitasoftware/demo-client:${DEMO_IMAGE_TAG:-latest}
+    image: akitasoftware/demo-client:${DEMO_IMAGE_TAG}
+    environment:
+        - DEMO_IMAGE_TAG=latest
     depends_on:
       - akita-demo-server
   akita:
@@ -21,8 +25,9 @@ services:
       - akita-demo-client
       - akita-demo-server
     environment:
-      - AKITA_API_KEY_ID=${AKITA_API_KEY_ID}
-      - AKITA_API_KEY_SECRET=${AKITA_API_KEY_SECRET}
+      - AKITA_API_KEY_ID
+      - AKITA_API_KEY_SECRET
+      - AKITA_PROJECT_NAME
     network_mode: "service:akita-demo-client"
-    entrypoint: /akita apidump --service "${AKITA_SERVICE_NAME}"
+    entrypoint: /akita apidump --service "${AKITA_PROJECT_NAME}"
 
