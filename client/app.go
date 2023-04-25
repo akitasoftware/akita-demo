@@ -51,6 +51,7 @@ func (a App) SendEvent(name string, properties map[string]any) {
 	}
 }
 
+// HandleDemoTasks sends requests to the demo server at a regular interval.
 func (a App) HandleDemoTasks() {
 	requestInterval := time.Second
 
@@ -68,6 +69,7 @@ func (a App) HandleDemoTasks() {
 	}
 }
 
+// Send a random request to the demo server.
 func (a App) sendMockTraffic() {
 	handleErr := func(apiName string, err error) {
 		if err != nil {
