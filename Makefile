@@ -28,34 +28,46 @@ check-tag: ## Check if the tag already exists for either the client or server im
 	(docker pull $(CLIENT_IMAGE):$(TAG) || docker pull $(SERVER_IMAGE):$(TAG)) && echo "Failure: Tag already exists" && false || true
 .PHONY: check-tag
 
-push-client: check-tag prepare-buildx
-	LATEST_TAG=''
+push-client: check-tag prepare-buildx ## Push the demo client image to the registry
 ifeq ($(LATEST),true)
-	LATEST_TAG='--tag=$(CLIENT_IMAGE):latest'
-endif
 	docker buildx build \
 		--push \
 		--builder=$(BUILDER) \
 		--platform=linux/amd64,linux/arm64 \
-		--build-arg TAG=$(TAG)
+		--build-arg TAG=$(TAG) \
 		--tag=$(CLIENT_IMAGE):$(TAG) \
-		$(LATEST_TAG) \
+		--tag=$(CLIENT_IMAGE):latest \
 		-f client/Dockerfile client
+else
+	docker buildx build \
+		--push \
+		--builder=$(BUILDER) \
+		--platform=linux/amd64,linux/arm64 \
+		--build-arg TAG=$(TAG) \
+		--tag=$(CLIENT_IMAGE):$(TAG) $(LATEST_TAG) \
+		-f client/Dockerfile client
+endif
 .PHONY: push-client
 
 push-server: check-tag prepare-buildx
-	LATEST_TAG=''
 ifeq ($(LATEST),true)
-	LATEST_TAG='--tag=$(SERVER_IMAGE):latest'
-endif
 	docker buildx build \
 		--push \
 		--builder=$(BUILDER) \
 		--platform=linux/amd64,linux/arm64 \
-		--build-arg TAG=$(TAG)
+		--build-arg TAG=$(TAG) \
 		--tag=$(SERVER_IMAGE):$(TAG) \
-		$(LATEST_TAG) \
-		-f server/Dockerfile server
+		--tag=$(SERVER_IMAGE):latest \
+		-f client/Dockerfile client
+else
+	docker buildx build \
+		--push \
+		--builder=$(BUILDER) \
+		--platform=linux/amd64,linux/arm64 \
+		--build-arg TAG=$(TAG) \
+		--tag=$(SERVER_IMAGE):$(TAG) $(LATEST_TAG) \
+		-f client/Dockerfile client
+endif
 .PHONY: push-server
 
 push-images: push-client push-server ## Push the demo images to the registry
