@@ -13,6 +13,10 @@ RUN --mount=type=cache,target=/go/pkg/mod \
     go build -trimpath -ldflags="-s -w" -o bin/service
 
 FROM alpine
+
+ARG TARGETPLATFORM
+ENV TARGETPLATFORM=${TARGETPLATFORM}
+
 COPY --from=builder /app/bin/service /
 
 CMD /service

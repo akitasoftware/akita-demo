@@ -5,4 +5,6 @@ analytics:
     name: aki-demo
     version: <APP_VERSION>
   batch_size: 1
+akita:
+  base_url: https://app.akita.software
 
