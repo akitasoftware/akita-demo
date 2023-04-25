@@ -8,11 +8,6 @@ import (
 	"net/http"
 )
 
-var (
-	// List of tricks IDs and their corresponding probability of being selected when sending a request to the mock demo server.
-	tricks map[string]float32
-)
-
 type (
 	// DemoServer is the interface for communicating with the mock demo server.
 	DemoServer interface {
