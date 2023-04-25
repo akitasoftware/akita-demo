@@ -1,7 +1,7 @@
 CLIENT_IMAGE ?= akitasoftware/demo-client
 SERVER_IMAGE ?= akitasoftware/demo-server
-TAG ?= latest
-LATEST ?= true
+TAG ?= dev
+LATEST ?= false
 
 BUILDER=buildx-multi-arch
 
