@@ -2,7 +2,6 @@ package main
 
 import (
 	"akitasoftware.com/demo-client/datasource"
-	"context"
 	"math"
 	"math/rand"
 	"net/http"
@@ -14,16 +13,14 @@ const (
 )
 
 func main() {
-	appCtx := context.Background()
-
 	// Create a new demo server
 	demoServer := datasource.NewDemoServer(demoServerURL, http.DefaultClient)
 
 	// Start sending requests to the demo server
-	handleDemoTasks(appCtx, demoServer)
+	handleDemoTasks(demoServer)
 }
 
-func sendMockTraffic(ctx context.Context, demoServer datasource.DemoServer) {
+func sendMockTraffic(demoServer datasource.DemoServer) {
 	handleErr := func(apiName string, err error) {
 		if err != nil {
 			// TODO: Log Error
@@ -31,7 +28,6 @@ func sendMockTraffic(ctx context.Context, demoServer datasource.DemoServer) {
 	}
 
 	// To showcase response count metric, we should attempt to send request disproportionately
-	// TODO: Figure out which isn't deprecated
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	randomNumber := r.Intn(100)
@@ -44,7 +40,7 @@ func sendMockTraffic(ctx context.Context, demoServer datasource.DemoServer) {
 	}
 }
 
-func handleDemoTasks(ctx context.Context, demoServer datasource.DemoServer) {
+func handleDemoTasks(demoServer datasource.DemoServer) {
 	requestInterval := time.Second
 
 	// Create a ticker with the initial interval
@@ -55,11 +51,9 @@ func handleDemoTasks(ctx context.Context, demoServer datasource.DemoServer) {
 
 	for {
 		select {
-		case <-ctx.Done():
-			return
 		case <-ticker.C:
 			// Send a request
-			sendMockTraffic(ctx, demoServer)
+			sendMockTraffic(demoServer)
 
 			// Increase the request count
 			requestCount++
@@ -73,17 +67,18 @@ func handleDemoTasks(ctx context.Context, demoServer datasource.DemoServer) {
 	}
 }
 
-// updateInterval calculates the new interval between requests based on the current request count.
-// It uses a custom base logarithm function to achieve a slow tapering off of request frequency.
 func updateInterval(requestCount int) time.Duration {
-	// Define the custom base for the logarithm function.
-	// A user should reach around 10k requests in 30 minutes.
-	base := 1.2
+	// Define a scaling factor to control the rate of interval increase
+	scalingFactor := 0.5
 
-	// Calculate the new interval by taking the custom base logarithm of the request count (plus 1 to avoid log(0)).
-	// The result is then multiplied by the duration of 1 second to get the new interval in time.Duration format.
-	newInterval := time.Duration(math.Log(float64(requestCount+1))/math.Log(base)) * time.Second
+	// Calculate the new interval using a logarithmic function
+	newInterval := time.Duration(scalingFactor*math.Log10(float64(requestCount+1))) * time.Second
 
-	// Return the updated interval.
+	// Limit the interval to a maximum of 60 seconds
+	maxInterval := 60 * time.Second
+	if newInterval > maxInterval {
+		newInterval = maxInterval
+	}
+
 	return newInterval
 }
