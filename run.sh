@@ -49,11 +49,6 @@ while [[ -z "$AKITA_PROJECT_NAME" ]]; do
   read -p "Enter your Akita Project Name: " AKITA_PROJECT_NAME
 done
 
-# Pull the latest images
-echo ""
-echo "Pulling the latest images..."
-DEMO_IMAGE_TAG="${DEMO_IMAGE_TAG}" docker-compose pull
-
 # Run docker-compose
 echo ""
 echo "Starting the Akita demo..."
@@ -61,7 +56,7 @@ AKITA_API_KEY_ID="${AKITA_API_KEY_ID}" \
 	AKITA_API_KEY_SECRET="${AKITA_API_KEY_SECRET}" \
 	AKITA_PROJECT_NAME="${AKITA_PROJECT_NAME}" \
   DEMO_IMAGE_TAG="${DEMO_IMAGE_TAG}" \
-	docker-compose up -d --always-recreate-deps
+	docker-compose up -d --always-recreate-deps --pull
 
 echo ""
 echo "The Akita demo is now up and running!"
