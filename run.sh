@@ -61,5 +61,5 @@ AKITA_API_KEY_ID="${AKITA_API_KEY_ID}" \
 echo ""
 echo "The Akita demo is now up and running!"
 echo "View the agent logs with: 'docker compose logs akita'"
-echo "To stop the demo run: 'docker-compose down"
+echo "To stop the demo run: 'docker-compose down'"
 echo "Enjoy!"
