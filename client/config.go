@@ -61,10 +61,6 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 		analyticsClient = optionals.Some(client)
 	}
 
-	akitaAPIKey := os.Getenv("AKITA_API_KEY")
-	akitaAPISecret := os.Getenv("AKITA_API_SECRET")
-	platform := os.Getenv("TARGETPLATFORM")
-
 	return &Configuration{
 		AkitaClient: akitaClient,
 		Analytics:   analyticsClient,
@@ -72,9 +68,11 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 			APIKey    string
 			APISecret string
 		}{
-			APIKey:    akitaAPIKey,
-			APISecret: akitaAPISecret,
+			// The API key and secret are set by the Docker Compose file.
+			APIKey:    os.Getenv("AKITA_API_KEY"),
+			APISecret: os.Getenv("AKITA_API_SECRET"),
 		},
-		Platform: platform,
+		// Get the target platform declared at build time.
+		Platform: os.Getenv("TARGETPLATFORM"),
 	}, nil
 }
