@@ -18,7 +18,7 @@ run-demo: ## Run the demo
 .PHONY: run-demo
 
 stop-demo: ## Stop the demo
-	docker compose down -v
+	DEMO_IMAGE_TAG=$(TAG) docker compose down -v --rmi all
 .PHONY: stop-demo
 
 restart-demo: stop-demo run-demo ## Restart the demo
