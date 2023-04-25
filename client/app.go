@@ -79,7 +79,10 @@ func (a App) sendMockTraffic() {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	randomNumber := r.Intn(100)
-	if randomNumber < 67 {
+	if randomNumber < 10 {
+		err := a.DemoServer.GetOwner()
+		handleErr("GetOwner", err)
+	} else if randomNumber < 67 {
 		err := a.DemoServer.GetBreed()
 		handleErr("GetBreed", err)
 	} else {

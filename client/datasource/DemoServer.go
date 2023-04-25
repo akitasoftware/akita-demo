@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/brianvoe/gofakeit/v6"
+	"github.com/pkg/errors"
 	"net/http"
 )
 
@@ -19,6 +20,8 @@ type (
 		GetBreed() error
 		// Send a random trick request to the demo server.
 		PostTrick() error
+		// Send a random GET owner request to the demo server.
+		GetOwner() error
 	}
 	demoServerImpl struct {
 		baseURL    string
@@ -142,4 +145,24 @@ func getRandomTrickID() (string, error) {
 	}
 
 	return selectedTrick.(string), nil
+}
+
+func (d demoServerImpl) GetOwner() error {
+	ownerID := gofakeit.UUID()
+
+	url := fmt.Sprintf("%s/v1/owners/%s", d.baseURL, ownerID)
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return errors.Wrap(err, "failed to create get owner request")
+	}
+
+	req.Header.Add("Accept", "application/json")
+
+	_, err = d.httpClient.Do(req)
+	if err != nil {
+		return errors.Wrap(err, "bad response from get owner request which should have succeeded")
+	}
+
+	return nil
 }
