@@ -29,4 +29,4 @@ services:
       - AKITA_API_KEY_SECRET
       - AKITA_PROJECT_NAME
     network_mode: "service:akita-demo-client"
-    entrypoint: /akita apidump --service "${AKITA_PROJECT_NAME}"
+    entrypoint: /akita apidump --project "$AKITA_PROJECT_NAME"

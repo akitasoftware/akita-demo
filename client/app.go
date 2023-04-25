@@ -57,9 +57,6 @@ func (a App) HandleDemoTasks() {
 	// Create a ticker that fires every second.
 	ticker := time.NewTicker(requestInterval)
 
-	// Keep track of the request count.
-	requestCount := 0
-
 	for {
 		select {
 		case <-ticker.C:
@@ -67,15 +64,6 @@ func (a App) HandleDemoTasks() {
 				// Send a request to the demo server.
 				a.sendMockTraffic()
 			}()
-
-			// Increase the request count
-			requestCount++
-
-			// Update the request interval
-			requestInterval = updateInterval(requestCount)
-
-			// Reset the ticker with the new interval
-			ticker.Reset(requestInterval)
 		}
 	}
 }
@@ -99,7 +87,9 @@ func updateInterval(requestCount int) time.Duration {
 
 func (a App) sendMockTraffic() {
 	handleErr := func(apiName string, err error) {
-		glog.Errorf("failed to send demo request to api '%s': %v", apiName, err)
+		if err != nil {
+			glog.Errorf("failed to send demo request to api '%s': %v", apiName, err)
+		}
 	}
 
 	// To showcase response count metric, we should attempt to send request disproportionately
