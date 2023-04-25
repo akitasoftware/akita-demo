@@ -67,6 +67,7 @@ func handleDemoTasks(demoServer datasource.DemoServer) {
 	}
 }
 
+// updateInterval calculates the new interval based on the request count
 func updateInterval(requestCount int) time.Duration {
 	// Define a scaling factor to control the rate of interval increase
 	scalingFactor := 0.5
