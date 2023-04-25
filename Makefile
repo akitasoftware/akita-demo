@@ -5,6 +5,9 @@ LATEST ?= false
 
 BUILDER=buildx-multi-arch
 
+INFO_COLOR = \033[0;36m
+NO_COLOR   = \033[m
+
 run-demo: build-client build-server ## Run the demo
 	docker compose up -d --always-recreate-deps
 .PHONY: run-demo
@@ -56,3 +59,9 @@ endif
 .PHONY: push-server
 
 push-images: push-client push-server ## Push the demo images to the registry
+
+help: ## Show this help
+	@echo Please specify a build target. The choices are:
+	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "$(INFO_COLOR)%-30s$(NO_COLOR) %s\n", $$1, $$2}'
+
+.PHONY: help
