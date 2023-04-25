@@ -18,7 +18,7 @@ read -p "Enter your Akita Project Name: " AKITA_PROJECT_NAME
 
 # Run docker-compose
 echo ""
-echo "Starting the Akita demo services... Please wait."
+echo "Starting the Akita demo... Please wait."
 DEMO_IMAGE_TAG=latest \
   AKITA_API_KEY_ID=$AKITA_API_KEY_ID \
   AKITA_API_KEY_SECRET=$AKITA_API_KEY_SECRET \
@@ -26,7 +26,7 @@ DEMO_IMAGE_TAG=latest \
   docker-compose up -d
 
 echo ""
-echo "The Akita demo services are now up and running!"
+echo "The Akita demo is now up and running!"
 echo "View the agent logs with: "
 echo "Enjoy!"
 

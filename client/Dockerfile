@@ -8,7 +8,7 @@ COPY go.* ./
 # Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN --mount=type=cache,target=/go/pkg/mod \
     --mount=type=cache,target=/root/.cache/go-build \
-    go mod download \
+    go mod download
 
 COPY . .
 RUN --mount=type=cache,target=/go/pkg/mod \
