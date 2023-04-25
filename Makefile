@@ -61,7 +61,7 @@ else
 		--platform=linux/amd64,linux/arm64 \
 		--secret id=application.yml,src=$(CONFIG_FILE) \
 		--build-arg TAG=$(TAG) \
-		--tag=$(CLIENT_IMAGE):$(TAG) $(LATEST_TAG) \
+		--tag=$(CLIENT_IMAGE):$(TAG) \
 		-f client/Dockerfile client
 endif
 .PHONY: push-client
@@ -82,7 +82,7 @@ else
 		--builder=$(BUILDER) \
 		--platform=linux/amd64,linux/arm64 \
 		--build-arg TAG=$(TAG) \
-		--tag=$(SERVER_IMAGE):$(TAG) $(LATEST_TAG) \
+		--tag=$(SERVER_IMAGE):$(TAG) \
 		-f server/Dockerfile server
 endif
 .PHONY: push-server
