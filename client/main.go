@@ -4,7 +4,6 @@ import (
 	"akitasoftware.com/demo-client/datasource"
 	_ "embed"
 	"flag"
-	"github.com/golang/glog"
 	"log"
 	"net/http"
 )
@@ -14,8 +13,6 @@ var applicationYML []byte
 
 func main() {
 	flag.Parse()
-
-	glog.Infof("applicationYML: %s", applicationYML)
 
 	config, err := ParseConfiguration(applicationYML)
 	if err != nil {
