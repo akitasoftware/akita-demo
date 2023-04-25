@@ -76,7 +76,7 @@ ifeq ($(LATEST),true)
 		--build-arg TAG=$(TAG) \
 		--tag=$(SERVER_IMAGE):$(TAG) \
 		--tag=$(SERVER_IMAGE):latest \
-		-f client/Dockerfile client
+		-f server/Dockerfile server
 else
 	docker buildx build \
 		--push \
@@ -84,14 +84,14 @@ else
 		--platform=linux/amd64,linux/arm64 \
 		--build-arg TAG=$(TAG) \
 		--tag=$(SERVER_IMAGE):$(TAG) $(LATEST_TAG) \
-		-f client/Dockerfile client
+		-f server/Dockerfile server
 endif
 .PHONY: push-server
 
 push-images: push-client push-server ## Push the demo images to the registry
+.PHONY: push-images
 
 help: ## Show this help
 	@echo Please specify a build target. The choices are:
 	@grep -E '^[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "$(INFO_COLOR)%-30s$(NO_COLOR) %s\n", $$1, $$2}'
-
 .PHONY: help
