@@ -9,9 +9,11 @@ BUILDER=buildx-multi-arch
 INFO_COLOR = \033[0;36m
 NO_COLOR   = \033[m
 
-run-demo: build-client build-server ## Run the demo
+run-demo: ## Run the demo
 	# Make sure the run script is executable
 	chmod +x run.sh
+	# Run the demo
+	# The demo image tag will decide which version of the demo to run.
 	DEMO_IMAGE_TAG=$(TAG) ./run.sh
 .PHONY: run-demo
 
@@ -21,6 +23,10 @@ stop-demo: ## Stop the demo
 
 restart-demo: stop-demo run-demo ## Restart the demo
 .PHONY: restart-demo
+
+
+run-demo-dev: build-client build-server run-demo ## Start the demo using local build images instead of pulling from the registry
+.PHONY: run-dev-demo
 
 build-client: ## Build the demo client
 	docker build --tag=$(CLIENT_IMAGE):$(TAG) --secret id=application.yml,src=$(CONFIG_FILE) -f client/Dockerfile client
