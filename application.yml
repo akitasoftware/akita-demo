@@ -1,6 +1,6 @@
 analytics:
-  enabled: true
-  segment_write_key: test_key
+  enabled: false
+  segment_write_key: <SEGMENT_WRITE_KEY>
   app:
     name: aki-demo
     version: <APP_VERSION>
