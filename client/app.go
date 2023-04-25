@@ -71,7 +71,8 @@ func (a App) HandleDemoTasks() {
 				err := a.sendMockTraffic()
 
 				// Send an error event if we've sent less than 5 error events
-				// TODO: This could be improved by allowing a configurable numbers per time period.
+				// TODO: It would be nice to have the error count be configurable.
+				// We could also consider resetting the error count after a certain amount of time.
 				rwMutex.RLock()
 				if err != nil && errorCount < 5 {
 					a.SendEvent(
