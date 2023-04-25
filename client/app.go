@@ -5,7 +5,9 @@ import (
 	"github.com/akitasoftware/akita-libs/analytics"
 	"github.com/akitasoftware/go-utils/optionals"
 	"github.com/golang/glog"
+	"github.com/pkg/errors"
 	"math/rand"
+	"sync"
 	"time"
 )
 
@@ -57,38 +59,56 @@ func (a App) HandleDemoTasks() {
 
 	// Create a ticker that fires every second.
 	ticker := time.NewTicker(requestInterval)
+	// Mutex for keeping track of errors logged by the ticker.
+	var rwMutex sync.RWMutex
+	var errorCount int
 
 	for {
 		select {
 		case <-ticker.C:
 			go func() {
 				// Send a request to the demo server.
-				a.sendMockTraffic()
+				err := a.sendMockTraffic()
+
+				// Send an error event if we've sent less than 5 error events
+				// TODO: This could be improved by allowing a configurable numbers per time period.
+				rwMutex.RLock()
+				if err != nil && errorCount < 5 {
+					a.SendEvent(
+						"Demo Client Error", map[string]any{
+							"error": err.Error(),
+						},
+					)
+					// Increment the error count. This is protected by a mutex because we're in a goroutine.
+					rwMutex.RUnlock()
+					rwMutex.Lock()
+					errorCount++
+					rwMutex.Unlock()
+				}
 			}()
 		}
 	}
 }
 
 // Send a random request to the demo server.
-func (a App) sendMockTraffic() {
-	handleErr := func(apiName string, err error) {
-		if err != nil {
-			glog.Errorf("failed to send demo request to api '%s': %v", apiName, err)
-		}
-	}
+func (a App) sendMockTraffic() error {
+	var err error
 
 	// To showcase response count metric, we should attempt to send request disproportionately
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	randomNumber := r.Intn(100)
 	if randomNumber < 10 {
-		err := a.DemoServer.GetOwner()
-		handleErr("GetOwner", err)
+		err = a.DemoServer.GetOwner()
 	} else if randomNumber < 67 {
-		err := a.DemoServer.GetBreed()
-		handleErr("GetBreed", err)
+		err = a.DemoServer.GetBreed()
 	} else {
-		err := a.DemoServer.PostTrick()
-		handleErr("PostTrick", err)
+		err = a.DemoServer.PostTrick()
 	}
+
+	if err != nil {
+		return errors.Wrap(err, "failed to send mock traffic")
+	}
+
+	return nil
 }
