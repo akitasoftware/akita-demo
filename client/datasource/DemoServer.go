@@ -38,7 +38,7 @@ func (d demoServerImpl) GetBreed() error {
 		return fmt.Errorf("failed to get random breed ID: %w", err)
 	}
 
-	url := fmt.Sprintf("%s/breeds/%s", d.baseURL, breedID)
+	url := fmt.Sprintf("%s/v1/breeds/%s", d.baseURL, breedID)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func (d demoServerImpl) PostTrick() error {
 		return fmt.Errorf("failed to get random trick ID: %w", err)
 	}
 
-	url := fmt.Sprintf("%s/tricks/%s", d.baseURL, trickID)
+	url := fmt.Sprintf("%s/v1/pets/%s/tricks/%s", d.baseURL, gofakeit.UUID(), trickID)
 
 	// Prepare a request body with a random owner ID, name, address, and treat count.
 	body := fmt.Sprintf(
