@@ -29,3 +29,6 @@ echo ""
 echo "The Akita demo services are now up and running!"
 echo "View the agent logs with: "
 echo "Enjoy!"
+
+# Cleanup: Remove the docker-compose.yml file
+rm docker-compose.yml
