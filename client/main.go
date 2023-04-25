@@ -2,17 +2,24 @@ package main
 
 import (
 	"akitasoftware.com/demo-client/datasource"
+	_ "embed"
+	"github.com/akitasoftware/akita-libs/analytics"
 	"math"
 	"math/rand"
 	"net/http"
 	"time"
 )
 
+//go:embed application.yml
+var applicationYML []byte
+
 const (
 	demoServerURL = "http://akita-demo-server:8080"
 )
 
 func main() {
+	analytics.NewClient(analytics.Config{})
+
 	// Create a new demo server
 	demoServer := datasource.NewDemoServer(demoServerURL, http.DefaultClient)
 
@@ -75,8 +82,8 @@ func updateInterval(requestCount int) time.Duration {
 	// Calculate the new interval using a logarithmic function
 	newInterval := time.Duration(scalingFactor*math.Log10(float64(requestCount+1))) * time.Second
 
-	// Limit the interval to a maximum of 60 seconds
-	maxInterval := 60 * time.Second
+	// Limit the interval to a maximum of 30 seconds
+	maxInterval := 30 * time.Second
 	if newInterval > maxInterval {
 		newInterval = maxInterval
 	}
