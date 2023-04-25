@@ -51,14 +51,18 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 	// Create the analytics client.
 	var analyticsClient optionals.Optional[analytics.Client]
 	if rawConfig.Analytics.Enabled {
+		glog.Info("Enabling analytics...")
 		client, err := analytics.NewClient(rawConfig.Analytics.Config)
 		if err != nil {
 			// If we fail to create the analytics client, we don't want to fail the entire demo.
 			// Instead, we just log the error and continue without analytics.
-			glog.Errorf("failed to create analytics client: %v", err)
+			glog.Errorf("Failed to create analytics client: %v", err)
 		}
 
+		glog.Info("Analytics client created successfully")
 		analyticsClient = optionals.Some(client)
+	} else {
+		glog.Info("analytics disabled")
 	}
 
 	return &Configuration{

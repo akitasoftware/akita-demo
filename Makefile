@@ -1,8 +1,8 @@
 CLIENT_IMAGE ?= akitasoftware/demo-client
 SERVER_IMAGE ?= akitasoftware/demo-server
 CONFIG_FILE ?= application.yml
-TAG ?= dev
-LATEST ?= false
+TAG ?= latest
+LATEST ?= true
 
 BUILDER=buildx-multi-arch
 

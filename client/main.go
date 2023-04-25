@@ -3,6 +3,7 @@ package main
 import (
 	"akitasoftware.com/demo-client/datasource"
 	_ "embed"
+	"flag"
 	"log"
 	"net/http"
 )
@@ -11,6 +12,8 @@ import (
 var applicationYML []byte
 
 func main() {
+	flag.Parse()
+
 	config, err := ParseConfiguration(applicationYML)
 	if err != nil {
 		log.Fatalf("failed to parse config: %v", err)
