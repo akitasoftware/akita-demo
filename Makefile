@@ -10,6 +10,8 @@ INFO_COLOR = \033[0;36m
 NO_COLOR   = \033[m
 
 run-demo: build-client build-server ## Run the demo
+	# Make sure the run script is executable
+	chmod +x run.sh
 	DEMO_IMAGE_TAG=$(TAG) ./run.sh
 .PHONY: run-demo
 
