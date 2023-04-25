@@ -1,5 +1,6 @@
 CLIENT_IMAGE ?= akitasoftware/demo-client
 SERVER_IMAGE ?= akitasoftware/demo-server
+CONFIG_FILE ?= application.yml
 TAG ?= dev
 LATEST ?= false
 
@@ -13,7 +14,7 @@ run-demo: build-client build-server ## Run the demo
 .PHONY: run-demo
 
 build-client: ## Build the demo client
-	docker build --tag=$(CLIENT_IMAGE):$(TAG) -f client/Dockerfile client
+	docker build --tag=$(CLIENT_IMAGE):$(TAG) --secret id=application.yml,src=$(CONFIG_FILE) -f client/Dockerfile client
 .PHONY: build-client
 
 build-server: ## Build the demo server
@@ -34,6 +35,7 @@ ifeq ($(LATEST),true)
 		--push \
 		--builder=$(BUILDER) \
 		--platform=linux/amd64,linux/arm64 \
+		--secret id=application.yml,src=$(CONFIG_FILE) \
 		--build-arg TAG=$(TAG) \
 		--tag=$(CLIENT_IMAGE):$(TAG) \
 		--tag=$(CLIENT_IMAGE):latest \
@@ -43,6 +45,7 @@ else
 		--push \
 		--builder=$(BUILDER) \
 		--platform=linux/amd64,linux/arm64 \
+		--secret id=application.yml,src=$(CONFIG_FILE) \
 		--build-arg TAG=$(TAG) \
 		--tag=$(CLIENT_IMAGE):$(TAG) $(LATEST_TAG) \
 		-f client/Dockerfile client
