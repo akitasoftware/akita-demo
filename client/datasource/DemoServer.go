@@ -13,6 +13,7 @@ var (
 )
 
 type (
+	// DemoServer is the interface for communicating with the mock demo server.
 	DemoServer interface {
 		// Send a random breed request to the demo server.
 		GetBreed() error

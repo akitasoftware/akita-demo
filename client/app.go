@@ -5,7 +5,6 @@ import (
 	"github.com/akitasoftware/akita-libs/analytics"
 	"github.com/akitasoftware/go-utils/optionals"
 	"github.com/golang/glog"
-	"math"
 	"math/rand"
 	"time"
 )
@@ -20,6 +19,7 @@ type App struct {
 	AnalyticsClient optionals.Optional[analytics.Client]
 }
 
+// Create a new app instance with the given configuration and demo server.
 func NewApp(config *Configuration, server datasource.DemoServer) *App {
 	return &App{
 		Config:          config,
@@ -66,23 +66,6 @@ func (a App) HandleDemoTasks() {
 			}()
 		}
 	}
-}
-
-// updateInterval calculates the new interval based on the request count
-func updateInterval(requestCount int) time.Duration {
-	// Define a scaling factor to control the rate of interval increase
-	scalingFactor := 0.5
-
-	// Calculate the new interval using a logarithmic function
-	newInterval := time.Duration(scalingFactor*math.Log10(float64(requestCount+1))) * time.Second
-
-	// Limit the interval to a maximum of 10 seconds
-	maxInterval := 10 * time.Second
-	if newInterval > maxInterval {
-		newInterval = maxInterval
-	}
-
-	return newInterval
 }
 
 func (a App) sendMockTraffic() {

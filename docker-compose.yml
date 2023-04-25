@@ -8,9 +8,6 @@ services:
       - DEMO_IMAGE_TAG=latest
     ports:
       - ":8080"
-    deploy:
-      restart_policy:
-        condition: on-failure
   akita-demo-client:
     container_name: akita-demo-client
     image: akitasoftware/demo-client:${DEMO_IMAGE_TAG}
@@ -29,4 +26,5 @@ services:
       - AKITA_API_KEY_SECRET
       - AKITA_PROJECT_NAME
     network_mode: "service:akita-demo-client"
-    entrypoint: /akita apidump --project "$AKITA_PROJECT_NAME"
+    entrypoint: /akita apidump --project=${AKITA_PROJECT_NAME}
+

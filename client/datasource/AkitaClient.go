@@ -6,7 +6,9 @@ import (
 	"net/http"
 )
 
+// AkitaClient is the interface for communicating with the Akita backend.
 type AkitaClient interface {
+	// GetUserEmail returns the email of the user associated with the API key and secret.
 	GetUserEmail(APIKey, APISecret string) (string, error)
 }
 
@@ -15,6 +17,7 @@ type akitaClientImpl struct {
 	httpClient *http.Client
 }
 
+// Creates a new AkitaClient with the given base URL and HTTP client.
 func NewAkitaClient(baseURL string, httpClient *http.Client) AkitaClient {
 	return &akitaClientImpl{
 		baseURL:    baseURL,
