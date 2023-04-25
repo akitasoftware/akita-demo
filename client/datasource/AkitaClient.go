@@ -3,6 +3,7 @@ package datasource
 import (
 	"encoding/json"
 	"github.com/pkg/errors"
+	"io"
 	"net/http"
 )
 
@@ -44,9 +45,27 @@ func (a akitaClientImpl) GetUserEmail(APIKey, APISecret string) (string, error) 
 	resp, err := a.httpClient.Do(req)
 	defer resp.Body.Close()
 
-	err = json.NewDecoder(resp.Body).Decode(&response)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", errors.Wrap(err, "failed to decode response body")
+		return "", errors.Wrap(err, "failed to read response body while fetching user email")
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return "", errors.Wrapf(
+			err,
+			"failed to fetch user email. status code: %d. body: %s",
+			resp.StatusCode,
+			string(body),
+		)
+	}
+
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to decode response body from user request. body: %s", string(body))
+	}
+
+	if response.Email == "" {
+		return "", errors.Errorf("response body from user request did not contain email. body: %s", string(body))
 	}
 
 	return response.Email, nil

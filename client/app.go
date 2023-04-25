@@ -36,7 +36,7 @@ func (a App) SendEvent(name string, properties map[string]any) {
 
 	analyticsClient, ok := a.AnalyticsClient.Get()
 	if !ok {
-		glog.Warning("analytics client not initialized")
+		glog.Warningf("analytics client not configured")
 		return
 	}
 
@@ -47,7 +47,7 @@ func (a App) SendEvent(name string, properties map[string]any) {
 	}
 
 	if err := analyticsClient.Track(email, name, properties); err != nil {
-		glog.Errorf("failed to send analytics event: %v", err)
+		glog.Errorf("failed to emit analytics event: %v", err)
 	}
 }
 

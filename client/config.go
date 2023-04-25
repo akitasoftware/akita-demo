@@ -51,7 +51,7 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 	// Create the analytics client.
 	var analyticsClient optionals.Optional[analytics.Client]
 	if rawConfig.Analytics.Enabled {
-		glog.Info("Enabling analytics...")
+		glog.Infof("Enabling analytics...")
 		client, err := analytics.NewClient(rawConfig.Analytics.Config)
 		if err != nil {
 			// If we fail to create the analytics client, we don't want to fail the entire demo.
@@ -59,10 +59,10 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 			glog.Errorf("Failed to create analytics client: %v", err)
 		}
 
-		glog.Info("Analytics client created successfully")
+		glog.Infof("Analytics client created successfully")
 		analyticsClient = optionals.Some(client)
 	} else {
-		glog.Info("analytics disabled")
+		glog.Infof("Analytics have been disabled")
 	}
 
 	return &Configuration{
@@ -73,8 +73,8 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 			APISecret string
 		}{
 			// The API key and secret are set by the Docker Compose file.
-			APIKey:    os.Getenv("AKITA_API_KEY"),
-			APISecret: os.Getenv("AKITA_API_SECRET"),
+			APIKey:    os.Getenv("AKITA_API_KEY_ID"),
+			APISecret: os.Getenv("AKITA_API_KEY_SECRET"),
 		},
 		// Get the target platform declared at build time.
 		Platform: os.Getenv("TARGETPLATFORM"),

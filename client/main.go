@@ -4,6 +4,7 @@ import (
 	"akitasoftware.com/demo-client/datasource"
 	_ "embed"
 	"flag"
+	"github.com/golang/glog"
 	"log"
 	"net/http"
 )
@@ -14,6 +15,8 @@ var applicationYML []byte
 func main() {
 	flag.Parse()
 
+	glog.Infof("applicationYML: %s", applicationYML)
+
 	config, err := ParseConfiguration(applicationYML)
 	if err != nil {
 		log.Fatalf("failed to parse config: %v", err)
@@ -23,7 +26,7 @@ func main() {
 
 	app := NewApp(config, server)
 
-	app.SendEvent("demo-client-started", map[string]any{})
+	app.SendEvent("Demo Client Started", map[string]any{})
 
 	app.HandleDemoTasks()
 }

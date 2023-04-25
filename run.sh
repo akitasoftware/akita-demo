@@ -49,14 +49,31 @@ while [[ -z "$AKITA_PROJECT_NAME" ]]; do
   read -p "Enter your Akita Project Name: " AKITA_PROJECT_NAME
 done
 
+# Pull required images from Docker Hub if they don't exist locally
+check_and_pull_image() {
+  image="$1"
+
+  docker inspect "${image}" || (echo "Image ${image} not found locally. Pulling..." && docker pull "${image}")
+}
+
+echo ""
+echo "Pulling the latest Akita demo images..."
+# Always pull the latest image of the CLI
+docker pull akitasoftware/cli:latest
+# Pull the demo images
+check_and_pull_image "akitasoftware/demo-server:${DEMO_IMAGE_TAG}"
+check_and_pull_image "akitasoftware/demo-client:${DEMO_IMAGE_TAG}"
+
+
 # Run docker-compose
+# Never pull images from Docker Hub so that the local image can be used if it exists
 echo ""
 echo "Starting the Akita demo..."
 AKITA_API_KEY_ID="${AKITA_API_KEY_ID}" \
 	AKITA_API_KEY_SECRET="${AKITA_API_KEY_SECRET}" \
 	AKITA_PROJECT_NAME="${AKITA_PROJECT_NAME}" \
   DEMO_IMAGE_TAG="${DEMO_IMAGE_TAG}" \
-	docker-compose up -d --always-recreate-deps --pull "missing"
+	docker-compose up -d --always-recreate-deps --pull 'never'
 
 echo ""
 echo "The Akita demo is now up and running!"

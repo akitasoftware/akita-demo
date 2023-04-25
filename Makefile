@@ -17,13 +17,12 @@ run-demo: ## Run the demo
 	DEMO_IMAGE_TAG=$(TAG) ./run.sh
 .PHONY: run-demo
 
-stop-demo: ## Stop the demo
+stop-demo: ## Stop the demo and remove all related volumes and images
 	DEMO_IMAGE_TAG=$(TAG) docker compose down -v --rmi all
 .PHONY: stop-demo
 
 restart-demo: stop-demo run-demo ## Restart the demo
 .PHONY: restart-demo
-
 
 run-demo-dev: build-client build-server run-demo ## Start the demo using local build images instead of pulling from the registry
 .PHONY: run-dev-demo
