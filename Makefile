@@ -13,7 +13,7 @@ run-demo: ## Run the demo
 	# Make sure the run script is executable
 	chmod +x run.sh
 	# Run the demo
-	# The demo image tag will decide which version of the demo to run.
+	# The demo image tag will decide which version of the demo images to use
 	DEMO_IMAGE_TAG=$(TAG) ./run.sh
 .PHONY: run-demo
 
