@@ -2,6 +2,9 @@
 
 set -e
 
+# Change into the script's directory.
+cd "$(dirname "$0")"
+
 # Ensure that the stop and restart scripts are executable
 chmod +x stop.sh
 chmod +x restart.sh
