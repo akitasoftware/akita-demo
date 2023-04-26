@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -18,10 +18,12 @@ if ! command -v docker-compose &> /dev/null; then
 fi
 
 # Display a welcome message
-echo "Welcome to the Akita Demo!"
-echo "This script will help you run the demo and prompt you for any required environment variables."
-echo "After that, it will start the demo for you."
-echo ""
+cat <<EOF
+Welcome to the Akita Demo!
+This script will help you run the demo and prompt you for any required environment variables.
+After that, it will start the demo for you.
+
+EOF
 
 # Check for default credentials in $HOME/.akita/credentials.yaml
 CONFIG_FILE="$HOME/.akita/credentials.yaml"
@@ -53,7 +55,10 @@ done
 check_and_pull_image() {
   image="$1"
 
-  docker inspect "${image}" > /dev/null 2>&1 || (echo "Image ${image} not found locally. Pulling..." && docker pull "${image}")
+  if ! docker inspect "${image}" &> /dev/null; then
+    echo "Image ${image} not found locally. Pulling..."
+    docker pull "${image}"
+  fi
 }
 
 echo ""
@@ -70,13 +75,15 @@ check_and_pull_image "akitasoftware/demo-client:${DEMO_IMAGE_TAG}"
 echo ""
 echo "Starting the Akita demo..."
 AKITA_API_KEY_ID="${AKITA_API_KEY_ID}" \
-	AKITA_API_KEY_SECRET="${AKITA_API_KEY_SECRET}" \
-	AKITA_PROJECT_NAME="${AKITA_PROJECT_NAME}" \
+  AKITA_API_KEY_SECRET="${AKITA_API_KEY_SECRET}" \
+  AKITA_PROJECT_NAME="${AKITA_PROJECT_NAME}" \
   DEMO_IMAGE_TAG="${DEMO_IMAGE_TAG}" \
-	docker-compose up -d --always-recreate-deps --pull 'never' --remove-orphans
+  docker-compose up -d --always-recreate-deps --pull 'never' --remove-orphans
 
-echo ""
-echo "The Akita demo is now up and running!"
-echo "View the agent logs with: 'docker compose logs akita'"
-echo "To stop the demo run: 'make stop-demo'"
-echo "Enjoy!"
+cat <<EOF
+
+The Akita demo is now up and running!
+View the agent logs with: 'docker compose logs akita'
+To stop the demo run: 'make stop-demo'
+Enjoy!
+EOF
