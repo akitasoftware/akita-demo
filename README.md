@@ -12,13 +12,14 @@ Go through initial onboarding in [Akita's web dashboard](https://app.akita.softw
 
 ### Step 2: Clone the repository
 Clone this repository to your local machine:
-`git clone https://github.com/akitasoftware/akita-demo.git`
+```
+git clone https://github.com/akitasoftware/akita-demo.git
+```
 
 ### Step 3: Run the demo
 Run the following commands to start the demo:
 ```
-chmod +x run.sh
-./run.sh
+chmod +x ./run.sh && ./run.sh
 ```
 
 To stop the demo, run `./stop.sh`. To restart the demo, run `./restart.sh`
