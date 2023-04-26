@@ -23,3 +23,16 @@ services:
         - DEMO_IMAGE_TAG=latest
     depends_on:
       - akita-demo-server
+  akita:
+    container_name: akita
+    image: akitasoftware/cli:latest
+    depends_on:
+      - akita-demo-client
+      - akita-demo-server
+    environment:
+      - AKITA_API_KEY_ID
+      - AKITA_API_KEY_SECRET
+      - AKITA_PROJECT_NAME
+    network_mode: "service:akita-demo-client"
+    entrypoint: /akita apidump --project=${AKITA_PROJECT_NAME}
+
