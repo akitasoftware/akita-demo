@@ -36,9 +36,11 @@ type Configuration struct {
 	Analytics   optionals.Optional[analytics.Client]
 	Credentials UserCredentials
 	// The target platform for the Docker image the client is derived from.
-	Platform string `yaml:"platform"`
+	Platform string
 }
 
+// Takes a byte array containing a rawConfiguration and turns it into a
+// Configuration instance.
 func ParseConfiguration(rawData []byte) (*Configuration, error) {
 	var rawConfig rawConfiguration
 	if err := yaml.Unmarshal(rawData, &rawConfig); err != nil {
@@ -68,10 +70,7 @@ func ParseConfiguration(rawData []byte) (*Configuration, error) {
 	return &Configuration{
 		AkitaClient: akitaClient,
 		Analytics:   analyticsClient,
-		Credentials: struct {
-			APIKey    string
-			APISecret string
-		}{
+		Credentials: UserCredentials{
 			// The API key and secret are set by the Docker Compose file.
 			APIKey:    os.Getenv("AKITA_API_KEY_ID"),
 			APISecret: os.Getenv("AKITA_API_KEY_SECRET"),

@@ -12,8 +12,8 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 
 COPY . .
 RUN --mount=type=cache,target=/go/pkg/mod \
-    --mount=type=secret,id=application.yml,dst=./application.yml \
     --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=secret,id=application.yml,dst=./application.yml \
     go build -trimpath -ldflags="-s -w" -o bin/service
 
 FROM alpine
