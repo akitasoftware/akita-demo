@@ -49,7 +49,7 @@ their usage in real time.
 Simply drop Akita into your system to understand your system behavior, without having to instrument code or build your
 own dashboards.
 
-[Create an account in the Akita App](https//app.akita.software/login?sign_up) to get started!
+[Create an account in the Akita App](https://app.akita.software/login?sign_up) to get started!
 
 ## Related links
 * [Akita blog](https://www.akitasoftware.com/blog)
