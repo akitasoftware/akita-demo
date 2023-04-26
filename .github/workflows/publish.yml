@@ -32,7 +32,7 @@ jobs:
           echo "latest=$LATEST" >> $GITHUB_ENV
 
       - name: Setup yq
-        uses: mikefarah/yq@4.33.3
+        uses: mikefarah/yq@master
 
       - name: Update application.yml
         env:
