@@ -6,4 +6,4 @@ analytics:
     version: <APP_VERSION>
   batch_size: 1
 akita:
-  base_url: https://app.akita.software
+  base_url: https://api.akita.software
