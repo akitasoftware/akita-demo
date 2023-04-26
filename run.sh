@@ -2,8 +2,17 @@
 
 set -e
 
+# Ensure that the stop and restart scripts are executable
+chmod +x stop.sh
+chmod +x restart.sh
+
 # Set the default image tag to latest
 DEMO_IMAGE_TAG="${DEMO_IMAGE_TAG:-latest}"
+
+if [ "$DEV_MODE" = true ]; then
+  echo "Running in dev mode. Building local images..."
+  TAG="$DEMO_IMAGE_TAG" make build-images
+fi
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
@@ -84,6 +93,6 @@ cat <<EOF
 
 The Akita demo is now up and running!
 View the agent logs with: 'docker compose logs akita'
-To stop the demo run: 'make stop-demo'
+To stop the demo run: './stop.sh' from this directory
 Enjoy!
 EOF

@@ -9,24 +9,6 @@ BUILDER=buildx-multi-arch
 INFO_COLOR = \033[0;36m
 NO_COLOR   = \033[m
 
-run-demo: ## Run the demo
-	# Make sure the run script is executable
-	chmod +x run.sh
-	# Run the demo
-	# The demo image tag will decide which version of the demo images to use
-	DEMO_IMAGE_TAG=$(TAG) ./run.sh
-.PHONY: run-demo
-
-stop-demo: ## Stop the demo and remove all related volumes and images
-	DEMO_IMAGE_TAG=$(TAG) docker compose down -v --rmi all
-.PHONY: stop-demo
-
-restart-demo: stop-demo run-demo ## Restart the demo
-.PHONY: restart-demo
-
-run-demo-dev: build-client build-server run-demo ## Start the demo using local build images instead of pulling from the registry
-.PHONY: run-dev-demo
-
 build-client: ## Build the demo client
 	docker build --tag=$(CLIENT_IMAGE):$(TAG) --secret id=application.yml,src=$(CONFIG_FILE) -f client/Dockerfile client
 .PHONY: build-client
@@ -34,6 +16,8 @@ build-client: ## Build the demo client
 build-server: ## Build the demo server
 	docker build --tag=$(SERVER_IMAGE):$(TAG) -f server/Dockerfile server
 .PHONY: build-server
+
+build-images: build-client build-server ## Build the demo images
 
 prepare-buildx: ## Create buildx builder for multi-arch build, if not exists
 	docker buildx inspect $(BUILDER) || docker buildx create --name=$(BUILDER) --driver=docker-container --driver-opt=network=host
