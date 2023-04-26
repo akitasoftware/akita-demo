@@ -23,11 +23,16 @@ prepare-buildx: ## Create buildx builder for multi-arch build, if not exists
 	docker buildx inspect $(BUILDER) || docker buildx create --name=$(BUILDER) --driver=docker-container --driver-opt=network=host
 .PHONY: prepare-buildx
 
-check-tag: ## Check if the tag already exists for either the client or server images. If so, fail.
-	(docker pull $(CLIENT_IMAGE):$(TAG) || docker pull $(SERVER_IMAGE):$(TAG)) && echo "Failure: Tag already exists" && false || true
-.PHONY: check-tag
+# Check if the specified tag exists remotely
+define check_remote_tag
+	@if docker pull $(1):$(TAG) >/dev/null 2>&1; then \
+		echo "Error: Image $(1):$(TAG) already exists in the registry."; \
+		exit 1; \
+	fi
+endef
 
-push-client: check-tag prepare-buildx ## Push the demo client image to the registry
+push-client: prepare-buildx ## Push the demo client image to the registry
+	$(call check_remote_tag,$(CLIENT_IMAGE))
 ifeq ($(LATEST),true)
 	docker buildx build \
 		--push \
@@ -50,7 +55,8 @@ else
 endif
 .PHONY: push-client
 
-push-server: check-tag prepare-buildx
+push-server: prepare-buildx
+	$(call check_remote_tag,$(SERVER_IMAGE))
 ifeq ($(LATEST),true)
 	docker buildx build \
 		--push \
