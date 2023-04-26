@@ -22,7 +22,7 @@ type rawConfiguration struct {
 	Akita struct {
 		// Base URL of the Akita API.
 		BaseURL string `yaml:"base_url"`
-	}
+	} `yaml:"akita"`
 }
 
 type UserCredentials struct {
