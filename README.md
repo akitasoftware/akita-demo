@@ -3,7 +3,7 @@
 This repository hosts the code for demoing the Akita Agent. Before running the demo, please ensure your system meets the following requirements
 
 ## Prerequisites
-1. **Docker**: Please ensure that you have Docker isntalled on your machine. You can download it from the official [Docker Website](https://docs.docker.com/engine/install/)
+1. **Docker**: Please ensure that you have Docker installed on your machine. You can download it from the official [Docker Website](https://docs.docker.com/engine/install/)
 2. **Akita User Account**: You must have an active user account with Akita. If you don't have one yet, please [sign up here](https://app.akita.software/login?sign_up)
 
 ## Getting started
