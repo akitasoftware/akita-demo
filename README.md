@@ -15,7 +15,10 @@ Clone this repository to your local machine:
 ```
 git clone https://github.com/akitasoftware/akita-demo.git
 ```
-
+Then `cd` into the demo's directory:
+```
+cd akita-demo
+```
 ### Step 3: Run the demo
 Run the following commands to start the demo:
 ```
