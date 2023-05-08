@@ -43,9 +43,6 @@ func (a akitaClientImpl) GetUserEmail(APIKey, APISecret string) (string, error) 
 	req.SetBasicAuth(APIKey, APISecret)
 
 	resp, err := a.httpClient.Do(req)
-	if err != nil {
-		return "", errors.Wrap(err, "failed to fetch user email")
-	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
