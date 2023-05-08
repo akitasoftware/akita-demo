@@ -20,9 +20,9 @@ Then `cd` into the demo's directory:
 cd akita-demo
 ```
 ### Step 3: Run the demo
-Run the following commands to start the demo:
+Run the following command to start the demo:
 ```
-chmod +x ./run.sh && ./run.sh
+./run.sh
 ```
 
 To stop the demo, run `./stop.sh`. To restart the demo, run `./restart.sh`
