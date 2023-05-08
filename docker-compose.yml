@@ -9,7 +9,7 @@ services:
     ports:
       - ":8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/__admin/mappings"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/__admin/mappings" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -18,9 +18,9 @@ services:
     container_name: akita-demo-client
     image: akitasoftware/demo-client:${DEMO_IMAGE_TAG}
     environment:
-        - AKITA_API_KEY_ID
-        - AKITA_API_KEY_SECRET
-        - DEMO_IMAGE_TAG=latest
+      - AKITA_API_KEY_ID
+      - AKITA_API_KEY_SECRET
+      - DEMO_IMAGE_TAG=latest
     depends_on:
       - akita-demo-server
   akita:
@@ -34,5 +34,5 @@ services:
       - AKITA_API_KEY_SECRET
       - AKITA_PROJECT_NAME
     network_mode: "service:akita-demo-client"
-    entrypoint: /akita apidump --project=${AKITA_PROJECT_NAME}
+    entrypoint: /akita apidump --project=${AKITA_PROJECT_NAME} --domain=staging.akita.software
 
